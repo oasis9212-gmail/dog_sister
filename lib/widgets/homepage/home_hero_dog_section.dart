@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../state/app_state.dart';
+import '../../state/app_state.dart';
 
 class HomeHeroDogSection extends StatelessWidget {
   final AppState app;

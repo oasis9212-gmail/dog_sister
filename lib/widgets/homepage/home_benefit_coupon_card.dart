@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'safe_asset_image.dart';
+import '../safe_asset_image.dart';
 
 class HomeBenefitCouponCard extends StatelessWidget {
   final String imageAsset;

@@ -5,10 +5,10 @@ import 'package:provider/provider.dart';
 import '../constants/app_palette.dart';
 import '../constants/home_screen_assets.dart';
 import '../state/app_state.dart';
-import '../widgets/home_benefit_coupon_card.dart';
-import '../widgets/home_big_scan_button.dart';
-import '../widgets/home_hero_dog_section.dart';
-import '../widgets/home_mileage_card.dart';
+import '../widgets/homepage/home_benefit_coupon_card.dart';
+import '../widgets/homepage/home_big_scan_button.dart';
+import '../widgets/homepage/home_hero_dog_section.dart';
+import '../widgets/homepage/home_mileage_card.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key, this.onOpenRanking});
