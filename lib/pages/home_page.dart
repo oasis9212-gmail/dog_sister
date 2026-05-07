@@ -11,9 +11,7 @@ import '../widgets/homepage/home_hero_dog_section.dart';
 import '../widgets/homepage/home_mileage_card.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key, this.onOpenRanking});
-
-  final VoidCallback? onOpenRanking;
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();

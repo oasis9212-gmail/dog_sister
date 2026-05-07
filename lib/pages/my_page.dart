@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
-import '../constants/lovable_assets.dart';
 import '../state/app_state.dart';
+import '../widgets/mypage/my_breed_avatar_button.dart';
+import '../widgets/mypage/my_card_shell.dart';
+import '../widgets/mypage/my_scan_row_tile.dart';
+import '../widgets/mypage/my_stat_row.dart';
+import '../widgets/mypage/my_stat_tile.dart';
 
-/// MyPage.tsx 스타일 — 카드 레이아웃, 품종(이미지) 선택, 스캔 내역.
 class MyPage extends StatelessWidget {
   const MyPage({super.key});
 
@@ -29,17 +32,15 @@ class MyPage extends StatelessWidget {
 
   static String _formatInt(int n) {
     return n.toString().replaceAllMapped(
-          RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-          (m) => '${m[1]},',
-        );
+      RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+      (m) => '${m[1]},',
+    );
   }
 
-  /// 가짜 기부 사료(kg) — 스캔 횟수에 비례해 증가하는 데모 값.
   static double _fakeDonatedKg(int scanCount) {
     return (12.5 + scanCount * 0.35).clamp(0, 99.9);
   }
 
-  /// 가짜 "이번 달" 스캔 횟수.
   static int _fakeMonthScanCount(int total) {
     if (total <= 0) return 0;
     return (total % 8) + 1;
@@ -86,11 +87,10 @@ class MyPage extends StatelessWidget {
             ),
             const SizedBox(height: 20),
 
-            // 프로필 카드
-            _CardShell(
+            MyCardShell(
               child: Row(
                 children: [
-                  _BreedAvatarButton(
+                  MyBreedAvatarButton(
                     imageAsset: app.userDogImageAsset,
                     onTap: () => _openBreedPicker(context, app),
                   ),
@@ -133,11 +133,10 @@ class MyPage extends StatelessWidget {
             ),
             const SizedBox(height: 14),
 
-            // 통계 그리드
             Row(
               children: [
                 Expanded(
-                  child: _StatTile(
+                  child: MyStatTile(
                     title: '기부한 사료',
                     valueText: donated.toStringAsFixed(1),
                     unit: 'kg',
@@ -148,7 +147,7 @@ class MyPage extends StatelessWidget {
                 ),
                 const SizedBox(width: 14),
                 Expanded(
-                  child: _StatTile(
+                  child: MyStatTile(
                     title: '총 적립 포인트',
                     valueText: _formatInt(app.mileage),
                     unit: 'P',
@@ -162,8 +161,7 @@ class MyPage extends StatelessWidget {
             ),
             const SizedBox(height: 16),
 
-            // 스캔 통계 (실제 + 가짜 보조)
-            _CardShell(
+            MyCardShell(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -176,13 +174,9 @@ class MyPage extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 12),
-                  _StatRow(label: '누적 영수증 스캔', value: '${app.totalScanCount}회'),
+                  MyStatRow(label: '누적 영수증 스캔', value: '${app.totalScanCount}회'),
                   const Divider(height: 20),
-                  _StatRow(
-                    label: '이번 달 스캔 (데모)',
-                    value: '$monthFake회',
-                    muted: true,
-                  ),
+                  MyStatRow(label: '이번 달 스캔 (데모)', value: '$monthFake회', muted: true),
                   const SizedBox(height: 8),
                   Text(
                     '※ 이번 달 수치는 UI 데모용 가짜 데이터입니다.',
@@ -203,7 +197,7 @@ class MyPage extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             if (scans.isEmpty)
-              _CardShell(
+              MyCardShell(
                 child: Text(
                   '아직 스캔 기록이 없어요. 홈에서 영수증을 스캔해 보세요!',
                   style: TextStyle(
@@ -217,7 +211,7 @@ class MyPage extends StatelessWidget {
               ...scans.take(8).map(
                     (e) => Padding(
                       padding: const EdgeInsets.only(bottom: 10),
-                      child: _ScanRowTile(entry: e),
+                      child: MyScanRowTile(entry: e),
                     ),
                   ),
           ],
@@ -316,7 +310,9 @@ class MyPage extends StatelessWidget {
                                 style: TextStyle(
                                   fontSize: 11,
                                   fontWeight: FontWeight.w800,
-                                  color: selected ? const Color(0xFFE85D3A) : const Color(0xFF3B2F2A),
+                                  color: selected
+                                      ? const Color(0xFFE85D3A)
+                                      : const Color(0xFF3B2F2A),
                                 ),
                               ),
                               if (selected)
@@ -365,269 +361,6 @@ class MyPage extends StatelessWidget {
           ],
         );
       },
-    );
-  }
-}
-
-class _CardShell extends StatelessWidget {
-  final Widget child;
-
-  const _CardShell({required this.child});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(18),
-      decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.94),
-        borderRadius: BorderRadius.circular(22),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.06),
-            blurRadius: 16,
-            offset: const Offset(0, 6),
-          ),
-        ],
-        border: Border.all(color: Colors.white.withValues(alpha: 0.8)),
-      ),
-      child: child,
-    );
-  }
-}
-
-class _BreedAvatarButton extends StatelessWidget {
-  final String imageAsset;
-  final VoidCallback onTap;
-
-  const _BreedAvatarButton({
-    required this.imageAsset,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(20),
-        child: Stack(
-          clipBehavior: Clip.none,
-          children: [
-            Container(
-              width: 76,
-              height: 76,
-              decoration: BoxDecoration(
-                color: const Color(0xFFFFF4EC),
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: const Color(0xFFFFE1C7)),
-              ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(18),
-                child: Image.asset(
-                  imageAsset,
-                  fit: BoxFit.contain,
-                  errorBuilder: (_, __, ___) => Image.asset(
-                    LovableAssets.dogBowwowPng,
-                    fit: BoxFit.cover,
-                    errorBuilder: (_, __, ___) =>
-                        const Center(child: Text('🐶', style: TextStyle(fontSize: 36))),
-                  ),
-                ),
-              ),
-            ),
-            Positioned(
-              right: -2,
-              bottom: -2,
-              child: Container(
-                width: 26,
-                height: 26,
-                decoration: const BoxDecoration(
-                  color: Color(0xFFFF7A5C),
-                  shape: BoxShape.circle,
-                ),
-                alignment: Alignment.center,
-                child: const Text('✏️', style: TextStyle(fontSize: 11)),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _StatTile extends StatelessWidget {
-  final String title;
-  final String valueText;
-  final String unit;
-  final String caption;
-  final Color background;
-  final Color valueColor;
-  final bool unitIsPrimary;
-
-  const _StatTile({
-    required this.title,
-    required this.valueText,
-    required this.unit,
-    required this.caption,
-    required this.background,
-    required this.valueColor,
-    this.unitIsPrimary = false,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: background,
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            title,
-            style: TextStyle(
-              fontSize: 11,
-              fontWeight: FontWeight.w700,
-              color: Colors.brown.shade600,
-            ),
-          ),
-          const SizedBox(height: 8),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.baseline,
-            textBaseline: TextBaseline.alphabetic,
-            children: [
-              Text(
-                valueText,
-                style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.w900,
-                  color: valueColor,
-                ),
-              ),
-              const SizedBox(width: 4),
-              Text(
-                unit,
-                style: TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w600,
-                  color: unitIsPrimary ? const Color(0xFFE85D3A) : Colors.brown.shade600,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 6),
-          Text(
-            caption,
-            style: TextStyle(
-              fontSize: 11,
-              fontWeight: FontWeight.w600,
-              color: unitIsPrimary ? Colors.brown.shade600 : const Color(0xFFE85D3A),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _StatRow extends StatelessWidget {
-  final String label;
-  final String value;
-  final bool muted;
-
-  const _StatRow({
-    required this.label,
-    required this.value,
-    this.muted = false,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: 13,
-            fontWeight: FontWeight.w600,
-            color: muted ? Colors.brown.shade500 : const Color(0xFF3B2F2A),
-          ),
-        ),
-        Text(
-          value,
-          style: TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.w900,
-            color: muted ? Colors.brown.shade600 : const Color(0xFFE85D3A),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class _ScanRowTile extends StatelessWidget {
-  final ScanEntry entry;
-
-  const _ScanRowTile({required this.entry});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-      decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.92),
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
-            blurRadius: 8,
-            offset: const Offset(0, 3),
-          ),
-        ],
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  entry.store,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w800,
-                    color: Color(0xFF3B2F2A),
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  entry.date,
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.brown.shade500,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Text(
-            '+${MyPage._formatInt(entry.earned)}P',
-            style: const TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w900,
-              color: Color(0xFFE85D3A),
-            ),
-          ),
-        ],
-      ),
     );
   }
 }

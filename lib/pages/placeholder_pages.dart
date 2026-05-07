@@ -27,19 +27,11 @@ class PlaceholderRewardPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      padding: const EdgeInsets.fromLTRB(16, 24, 16, 96),
-      children: [
-        const Text(
-          '리워드',
-          style: TextStyle(fontSize: 22, fontWeight: FontWeight.w900, color: Color(0xFF3B2F2A)),
-        ),
-        const SizedBox(height: 12),
-        Text(
-          '획득한 마일리지를 리워드로 바꿔보세요.',
-          style: const TextStyle(fontWeight: FontWeight.w700, color: Color(0xFF6B4D2E)),
-        ),
-      ],
+    return const Center(
+      child: Text(
+        '여기가 리워드입니다.xxx',
+        style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700, color: Color(0xFF3B2F2A)),
+      ),
     );
   }
 }

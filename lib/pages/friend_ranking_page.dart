@@ -8,6 +8,7 @@ import '../state/app_state.dart';
 
 const _kMeId = 'me';
 
+// 삭제 . 
 /// FriendRanking.tsx 참고: TOP 10 + 나머지 친구 구분, '나' 강조.
 class FriendRankingPage extends StatelessWidget {
   const FriendRankingPage({super.key});

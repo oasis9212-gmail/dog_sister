@@ -3,9 +3,6 @@ import 'package:provider/provider.dart';
 
 import '../constants/app_palette.dart';
 import '../state/app_state.dart';
-import '../widgets/dog_game_dialog.dart';
-
-import 'friend_ranking_page.dart';
 import 'home_page.dart';
 import 'my_page.dart';
 import 'placeholder_pages.dart';
@@ -62,10 +59,8 @@ class _MainShellState extends State<MainShell> {
         });
 
         final pages = [
-          HomePage(onOpenRanking: () => setState(() => _index = 1)),
-          const FriendRankingPage(),
+          const HomePage(),
           const PlaceholderRewardPage(),
-          const DogGameDialog(),
           const MyPage(),
         ];
 
@@ -235,9 +230,7 @@ class _BottomNav extends StatelessWidget {
         selectedLabelStyle: const TextStyle(fontWeight: FontWeight.w900),
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: '홈'),
-          BottomNavigationBarItem(icon: Icon(Icons.emoji_events_outlined), label: '랭킹'),
           BottomNavigationBarItem(icon: Icon(Icons.card_giftcard_outlined), label: '리워드'),
-          BottomNavigationBarItem(icon: Icon(Icons.pets), label: '게임'),
           BottomNavigationBarItem(icon: Icon(Icons.person_outline), label: '마이'),
         ],
         onTap: onChanged,
