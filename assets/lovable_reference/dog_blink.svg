@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="260" height="230" viewBox="0 0 260 230">
+  <!-- body -->
+  <ellipse cx="130" cy="140" rx="82" ry="66" fill="#F2B56B"/>
+  <!-- belly -->
+  <ellipse cx="122" cy="155" rx="45" ry="30" fill="#F9D9A6"/>
+  <!-- head -->
+  <ellipse cx="130" cy="92" rx="65" ry="52" fill="#F2B56B"/>
+
+  <!-- ears -->
+  <path d="M92 68 C80 48, 86 24, 110 30 C115 36, 116 54, 110 70 Z" fill="#E29E55"/>
+  <path d="M168 68 C180 48, 174 24, 150 30 C145 36, 144 54, 150 70 Z" fill="#E29E55"/>
+
+  <!-- collar -->
+  <rect x="62" y="128" width="136" height="24" rx="12" fill="#2F6BFF" opacity="0.95"/>
+  <circle cx="182" cy="140" r="10" fill="#FFB800"/>
+
+  <!-- face: eyes closed (lines) -->
+  <path d="M98 98 Q112 98 126 98" stroke="#3B2F2A" stroke-width="6" stroke-linecap="round" fill="none"/>
+  <path d="M134 98 Q148 98 162 98" stroke="#3B2F2A" stroke-width="6" stroke-linecap="round" fill="none"/>
+
+  <!-- nose -->
+  <path d="M130 102
+           Q122 96 115 100
+           Q123 112 130 112
+           Q137 112 145 100
+           Q138 96 130 102 Z" fill="#3B2F2A"/>
+
+  <!-- smile -->
+  <path d="M105 123
+           Q130 145 155 123" fill="none" stroke="#3B2F2A" stroke-width="5" stroke-linecap="round"/>
+
+  <!-- tongue -->
+  <path d="M123 133
+           Q130 150 137 133
+           Q130 156 123 133 Z" fill="#EC6B7C" opacity="0.95"/>
+</svg>
+
