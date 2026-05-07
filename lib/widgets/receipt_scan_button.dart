@@ -18,16 +18,18 @@ class ReceiptScanButton extends StatelessWidget {
         onPressed: isScanning ? null : onPressed,
         style: ElevatedButton.styleFrom(
           padding: const EdgeInsets.symmetric(vertical: 18),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(999)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(999),
+          ),
           backgroundColor: Colors.white.withOpacity(0.92),
           foregroundColor: const Color(0xFF3B2F2A),
           elevation: 12,
           side: BorderSide(color: Colors.white.withOpacity(0.65), width: 1),
         ),
         child: isScanning
-            ? Row(
+            ? const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
+                children: [
                   SizedBox(
                     width: 18,
                     height: 18,
@@ -44,11 +46,10 @@ class ReceiptScanButton extends StatelessWidget {
                 ],
               )
             : const Text(
-              '영수증 촬영',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w900),
-            ),
+                '영수증 촬영',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w900),
+              ),
       ),
     );
   }
 }
-
