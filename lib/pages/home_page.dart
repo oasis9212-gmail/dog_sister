@@ -1,6 +1,3 @@
-import 'dart:async';
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -23,8 +20,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  String? _bubbleText;
-  Timer? _bubbleTimer;
   bool _cameraBusy = false;
 
   final ImagePicker _imagePicker = ImagePicker();
@@ -73,31 +68,6 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  static const _bubbleLines = [
-    '오늘 영수증은 스캔했멍?',
-    '배고파요!',
-    '산책 가자멍~',
-    '주인님 최고멍! 🐾',
-    '포인트 모아서 간식 사줘!',
-    '기분 좋은 하루멍!',
-    '영수증 한 장이면 충분해요!',
-  ];
-
-  @override
-  void dispose() {
-    _bubbleTimer?.cancel();
-    super.dispose();
-  }
-
-  void _showRandomBubble() {
-    final line = _bubbleLines[Random().nextInt(_bubbleLines.length)];
-    setState(() => _bubbleText = line);
-    _bubbleTimer?.cancel();
-    _bubbleTimer = Timer(const Duration(seconds: 3), () {
-      if (mounted) setState(() => _bubbleText = null);
-    });
-  }
-
   static String _fmt(int n) {
     return n.toString().replaceAllMapped(
       RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
@@ -131,8 +101,6 @@ class _HomePageState extends State<HomePage> {
         final expProgress = maxExp <= 0
             ? 0.0
             : (app.exp / maxExp).clamp(0.0, 1.0);
-        final remainingPercent = ((1.0 - expProgress) * 100).round().clamp(0, 100);
-
         return Scaffold(
           backgroundColor: AppPalette.ivoryBackground,
           body: Column(
@@ -203,9 +171,6 @@ class _HomePageState extends State<HomePage> {
                         HomeHeroDogSection(
                           app: app,
                           expProgress: expProgress,
-                          remainingPercent: remainingPercent,
-                          bubbleText: _bubbleText,
-                          onDogTap: _showRandomBubble,
                         ),
                         const SizedBox(height: 20),
 
